@@ -22,8 +22,8 @@ type configuration struct {
 		IP   string
 	}
 	Prefixes struct {
-		callsign   []string
-		gridsquare []string
+		Callsign   []string
+		Gridsquare []string
 	}
 }
 
@@ -79,7 +79,7 @@ func main() {
 		log.Fatalf("%+v", err)
 	}
 	ip := net.ParseIP(config.WSJTXServer.IP)
-	if ip != nil {
+	if ip == nil {
 		log.Fatalf("%+v", err)
 	}
 	conn, err := net.ListenUDP("udp", &net.UDPAddr{
@@ -144,7 +144,7 @@ func main() {
 				callerGridsquare := f[l-1]
 
 				// test callsign
-				if HasAnyPrefix(callerCallsign, config.Prefixes.callsign) {
+				if HasAnyPrefix(callerCallsign, config.Prefixes.Callsign) {
 					color.Red(fmt.Sprintf("%s matches callsign prefix alert", callerCallsign))
 					alertSound()
 				}
@@ -153,7 +153,7 @@ func main() {
 				_, err := strconv.Atoi(callerGridsquare[1:])
 				if err != nil && callerGridsquare != "RR73" {
 					// test gridsquare
-					if HasAnyPrefix(callerGridsquare, config.Prefixes.gridsquare) {
+					if HasAnyPrefix(callerGridsquare, config.Prefixes.Gridsquare) {
 						color.Red(fmt.Sprintf("%s matches gridsquare prefix alert", callerGridsquare))
 						alertSound()
 					}
