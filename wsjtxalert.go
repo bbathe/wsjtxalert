@@ -42,6 +42,18 @@ func HasAnyPrefix(s string, prefixes []string) bool {
 	return false
 }
 
+func CompactSlice(s []string) []string {
+	c := make([]string, 0, len(s))
+
+	for _, e := range s {
+		if len(e) > 0 {
+			c = append(c, e)
+		}
+	}
+
+	return c
+}
+
 func main() {
 	// show file & location, date & time
 	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
@@ -132,7 +144,7 @@ func main() {
 			}
 
 			// process message for callsign & gridsquare
-			f := strings.Split(d.Message, " ")
+			f := CompactSlice(strings.Split(d.Message, " "))
 			l := len(f)
 			if l > 2 {
 				// CQ KR0OT DN40
